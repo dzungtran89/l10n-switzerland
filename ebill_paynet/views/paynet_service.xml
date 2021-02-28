@@ -95,6 +95,8 @@
         <field name="model">paynet.service</field>
         <field name="arch" type="xml">
             <search>
+                <field name="name"/>
+                <field name="partner_bank_id"/>
                 <filter
                     name="all_service"
                     string="All"

@@ -123,6 +123,8 @@ class CommonCase(SavepointCase, XmlTestMixin):
                 "default_code": "370003022",
             }
         )
+        cls.product.product_tmpl_id.invoice_policy = "order"
+        cls.product_long_name.product_tmpl_id.invoice_policy = "order"
         cls.sale = cls.env["sale.order"].create(
             {
                 "name": "Order123",
@@ -181,22 +183,27 @@ class CommonCase(SavepointCase, XmlTestMixin):
             }
         )
         cls.invoice.action_post()
-        cls.invoice.invoice_payment_ref = "1234567890"
-        cls.invoice.invoice_partner_bank_id = cls.partner_bank.id
+        cls.invoice.payment_reference = "1234567890"
+        cls.invoice.partner_bank_id = cls.partner_bank.id
 
     @staticmethod
     def compare_xml_line_by_line(content, expected):
         """This a quick way to check the diff line by line to ease debugging"""
-        generated_line = [l.strip() for l in content.split(b"\n") if len(l.strip())]
-        expected_line = [l.strip() for l in expected.split(b"\n") if len(l.strip())]
+        generated_line = [
+            xml_content.strip()
+            for xml_content in content.split(b"\n")
+            if len(xml_content.strip())
+        ]
+        expected_line = [
+            xml_content.strip()
+            for xml_content in expected.split(b"\n")
+            if len(xml_content.strip())
+        ]
         number_of_lines = len(expected_line)
         for i in range(number_of_lines):
             if generated_line[i].strip() != expected_line[i].strip():
                 return "Diff at {}/{} || Expected {}  || Generated {}".format(
-                    i,
-                    number_of_lines,
-                    expected_line[i],
-                    generated_line[i],
+                    i, number_of_lines, expected_line[i], generated_line[i]
                 )
 
 

@@ -52,7 +52,7 @@ class PaynetInvoiceMessage(models.Model):
         string="IC Ref", size=14, help="Document interchange reference"
     )
     # Set with invoice_id.number but also with returned data from server ?
-    ref = fields.Char("Reference N°", size=35)
+    ref = fields.Char("Reference No.", size=35)
     ebill_account_number = fields.Char("Paynet Id", size=20)
     payload = fields.Text("Payload sent")
     response = fields.Text("Response recieved")
@@ -88,13 +88,11 @@ class PaynetInvoiceMessage(models.Model):
         bank_account = ""
         if self.payment_type == "qr":
             bank_account = sanitize_account_number(
-                self.invoice_id.invoice_partner_bank_id.l10n_ch_qr_iban
-                or self.invoice_id.invoice_partner_bank_id.acc_number
+                self.invoice_id.partner_bank_id.l10n_ch_qr_iban
+                or self.invoice_id.partner_bank_id.acc_number
             )
         else:
-            bank_account = (
-                self.invoice_id.invoice_partner_bank_id.l10n_ch_isr_subscription_chf
-            )
+            bank_account = self.invoice_id.partner_bank_id.l10n_ch_isr_subscription_chf
             if bank_account:
                 account_parts = bank_account.split("-")
                 bank_account = (
@@ -111,11 +109,11 @@ class PaynetInvoiceMessage(models.Model):
             "customer": self.invoice_id.partner_id,
             "delivery": self.invoice_id.partner_shipping_id,
             "pdf_data": self.attachment_id.datas.decode("ascii"),
-            "bank": self.invoice_id.invoice_partner_bank_id,
+            "bank": self.invoice_id.partner_bank_id,
             "bank_account": bank_account,
             "ic_ref": self.ic_ref,
             "payment_type": self.payment_type,
-            "document_type": DOCUMENT_TYPE[self.invoice_id.type],
+            "document_type": DOCUMENT_TYPE[self.invoice_id.move_type],
             "format_date": self.format_date,
             "ebill_account_number": self.ebill_account_number,
             "discount_template": "",

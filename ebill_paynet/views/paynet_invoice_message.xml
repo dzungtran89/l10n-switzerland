@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-        </header>
+                </header>
                 <sheet>
                     <button type="object" name="send_to_paynet">Resend</button>
                     <group>

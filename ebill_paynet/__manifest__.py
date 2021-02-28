@@ -5,7 +5,7 @@
     "name": "eBill Paynet",
     "summary": """
         Paynet platform bridge implementation""",
-    "version": "13.0.1.0.0",
+    "version": "14.0.1.0.0",
     "license": "AGPL-3",
     "author": "Camptocamp SA,Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/l10n-switzerland",
@@ -17,6 +17,7 @@
         "l10n_ch_qriban",
         "queue_job",
         "sale",
+        "mass_mailing",
     ],
     "external_dependencies": {"python": ["zeep"]},
     "data": [
